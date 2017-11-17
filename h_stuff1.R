@@ -170,21 +170,21 @@ s_intro_110 <- getBills(api_key,"110","senate", "introduced", 1,12000)
 h_intro_109 <- getBills(api_key,"109","house", "introduced", 1,12000)
 s_intro_109 <- getBills(api_key,"109","senate", "introduced", 1,12000)
 
-# h_intro_108 <- getBills("jkbsSf26e2TgcM0esDX9MUfxTDn05nT7u8c5uTMe","108","house", "introduced", 1,12000)
-# s_intro_108 <- getBills("jkbsSf26e2TgcM0esDX9MUfxTDn05nT7u8c5uTMe","108","senate", "introduced", 1,12000)
+# h_intro_108 <- getBills(api_key,"108","house", "introduced", 1,12000)
+# s_intro_108 <- getBills(api_key,"108","senate", "introduced", 1,12000)
 # 
-# h_intro_107 <- getBills("jkbsSf26e2TgcM0esDX9MUfxTDn05nT7u8c5uTMe","107","house", "introduced", 1,12000)
-# s_intro_107 <- getBills("jkbsSf26e2TgcM0esDX9MUfxTDn05nT7u8c5uTMe","107","senate", "introduced", 1,12000)
+# h_intro_107 <- getBills(api_key,"107","house", "introduced", 1,12000)
+# s_intro_107 <- getBills(api_key,"107","senate", "introduced", 1,12000)
 # 
-# h_intro_106 <- getBills("jkbsSf26e2TgcM0esDX9MUfxTDn05nT7u8c5uTMe","106","house", "introduced", 1,12000)
-# s_intro_106 <- getBills("jkbsSf26e2TgcM0esDX9MUfxTDn05nT7u8c5uTMe","106","senate", "introduced", 1,12000)
+# h_intro_106 <- getBills(api_key,"106","house", "introduced", 1,12000)
+# s_intro_106 <- getBills(api_key,"106","senate", "introduced", 1,12000)
 # 
 
-#t2 <- getBills("jkbsSf26e2TgcM0esDX9MUfxTDn05nT7u8c5uTMe","112","house", "introduced", 8200,10000)
+#t2 <- getBills(api_key,"112","house", "introduced", 8200,10000)
 
 # library(httr)
 # t3 <- GET("https://api.propublica.org/congress/v1/108/bills/hr4837.json",
-#           add_headers(`X-API-Key` = "jkbsSf26e2TgcM0esDX9MUfxTDn05nT7u8c5uTMe"))
+#           add_headers(`X-API-Key` = api_key))
 # 
 # 
 # 
