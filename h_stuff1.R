@@ -1,3 +1,13 @@
+library(proPubBills)
+library(reshape2)
+library(dplyr)
+library(ggplot2)
+library(stringr)
+library(tm)
+library(wordcloud)
+library(RColorBrewer)
+library(SnowballC)
+
 api_key <- Sys.getenv('api_key')
 
 h_enact_115 <- getBills(api_key, "115", "house","enacted",1,8000 )
@@ -81,6 +91,7 @@ house_113_to_115_graph <- ggplot(hs_113_to_115_3_h, aes(x=congress, y=value, gro
   geom_bar(stat="identity", position="dodge", size=0.25, width=0.8) +
   scale_fill_manual(values=c("blue","red", "purple"))
 
+house_113_to_115_graph
 
 senate_113_to_115_graph <- ggplot(hs_113_to_115_3_s, aes(x=congress, y=value, group=Var1, fill=Var1)) +   
   geom_bar(stat="identity", position="dodge", size=0.25, width=0.8) +
@@ -96,104 +107,87 @@ house_senate_113_to_115_graph <- ggplot(hs_113_to_115_4, aes(x=congress, y=value
   geom_bar(stat="identity", position="dodge", size=0.25, width=0.8) +
   scale_fill_manual(values=c("blue","red", "purple"))
 
-
-
+house_senate_113_to_115_graph
 
 
 
 ###
 
 h_intro_112 <- getBills(api_key,"112","house", "introduced", 1,12000)
-s_intro_112 <- getBills(api_key,"112","senate", "introduced", 1,12000)
+s_intro_112 <- getBills(api_key,"112","senate", "introduced", 1,6000)
 
-t01 <- as.data.frame(as.character(h_intro_112$title))
+t112 <- as.data.frame(as.character(h_intro_112$title))
 
-t01$`as.character(h_intro_112$title)` <- gsub('Act', '', t01$`as.character(h_intro_112$title)`)
-t01$`as.character(h_intro_112$title)` <- gsub('2011', '', t01$`as.character(h_intro_112$title)`)
-t01$`as.character(h_intro_112$title)` <- gsub('2012', '', t01$`as.character(h_intro_112$title)`)
-t01$`as.character(h_intro_112$title)` <- gsub('United States', 'U.S.', t01$`as.character(h_intro_112$title)`)
-t01$`as.character(h_intro_112$title)` <- gsub('amend', '', t01$`as.character(h_intro_112$title)`)
+t112$`as.character(h_intro_112$title)` <- gsub('Act', '', t112$`as.character(h_intro_112$title)`)
+t112$`as.character(h_intro_112$title)` <- gsub('2011', '', t112$`as.character(h_intro_112$title)`)
+t112$`as.character(h_intro_112$title)` <- gsub('2012', '', t112$`as.character(h_intro_112$title)`)
+t112$`as.character(h_intro_112$title)` <- gsub('United States', 'U.S.', t112$`as.character(h_intro_112$title)`)
+t112$`as.character(h_intro_112$title)` <- gsub('amend', '', t112$`as.character(h_intro_112$title)`)
 
-t02 <- paste(unlist(t01), collapse =" ")
+t112_2 <- paste(unlist(t112), collapse =" ")
 
-t <- Corpus(VectorSource(t02))
-            
+t112_3 <- Corpus(VectorSource(t112_2))
 
-b1 <- as.data.frame(as.character(t3))
 
-t1 <- tm_map(t, PlainTextDocument)
-t2 <- tm_map(t1, removePunctuation)
-t3 <- tm_map(t2, removeWords, stopwords('english'))
-t4 <- tm_map(t3, stemDocument)
+t112_4 <- as.data.frame(as.character(t112_3))
 
-wordcloud(t3, max.words = 10, random.order = FALSE)
+t112_5 <- tm_map(t112_3, PlainTextDocument)
+t112_6 <- tm_map(t112_5, removePunctuation)
+t112_7 <- tm_map(t112_6, removeWords, stopwords('english'))
 
-str(t3)
+pal2 <- brewer.pal(11,"Spectral")
 
-str(t1)
+wordcloud_112 <- wordcloud(t112_7, max.words = 50, random.order = FALSE, color=pal2)
 
+wordcloud_112
 
 
 h_intro_111 <- getBills(api_key,"111","house", "introduced", 1,12000)
-s_intro_111 <- getBills(api_key,"111","senate", "introduced", 1,12000)
+s_intro_111 <- getBills(api_key,"111","senate", "introduced", 1,6000)
 
-t01 <- as.data.frame(as.character(h_intro_111$title))
+t111 <- as.data.frame(as.character(h_intro_111$title))
 
-t01$`as.character(h_intro_111$title)` <- gsub('Act', '', t01$`as.character(h_intro_111$title)`)
-t01$`as.character(h_intro_111$title)` <- gsub('2010', '', t01$`as.character(h_intro_111$title)`)
-t01$`as.character(h_intro_111$title)` <- gsub('2009', '', t01$`as.character(h_intro_111$title)`)
-t01$`as.character(h_intro_111$title)` <- gsub('United States', 'U.S.', t01$`as.character(h_intro_111$title)`)
-t01$`as.character(h_intro_111$title)` <- gsub('amend', '', t01$`as.character(h_intro_111$title)`)
-
-
-t02 <- paste(unlist(t01), collapse =" ")
-
-t <- Corpus(VectorSource(t02))
+t111$`as.character(h_intro_111$title)` <- gsub('Act', '', t111$`as.character(h_intro_111$title)`)
+t111$`as.character(h_intro_111$title)` <- gsub('2010', '', t111$`as.character(h_intro_111$title)`)
+t111$`as.character(h_intro_111$title)` <- gsub('2009', '', t111$`as.character(h_intro_111$title)`)
+t111$`as.character(h_intro_111$title)` <- gsub('United States', 'U.S.', t111$`as.character(h_intro_111$title)`)
+t111$`as.character(h_intro_111$title)` <- gsub('amend', '', t111$`as.character(h_intro_111$title)`)
 
 
-b1 <- as.data.frame(as.character(t3))
+t111_2 <- paste(unlist(t111), collapse =" ")
 
-t1 <- tm_map(t, PlainTextDocument)
-t2 <- tm_map(t1, removePunctuation)
-t3 <- tm_map(t2, removeWords, stopwords('english'))
-t4 <- tm_map(t3, stemDocument)
+t111_3 <- Corpus(VectorSource(t111_2))
 
-wordcloud(t3, max.words = 10, random.order = FALSE)
+t111_5 <- tm_map(t111_3, PlainTextDocument)
+t111_6 <- tm_map(t111_5, removePunctuation)
+t111_7 <- tm_map(t111_6, removeWords, stopwords('english'))
 
-str(t3)
+wordcloud_111 <- wordcloud(t111_7, max.words = 50, random.order = FALSE, colors=pal2)
 
-str(t1)
+wordcloud_111
+
+
 
 h_intro_110 <- getBills(api_key,"110","house", "introduced", 1,12000)
-s_intro_110 <- getBills(api_key,"110","senate", "introduced", 1,12000)
+s_intro_110 <- getBills(api_key,"110","senate", "introduced", 1,6000)
 
-h_intro_109 <- getBills(api_key,"109","house", "introduced", 1,12000)
-s_intro_109 <- getBills(api_key,"109","senate", "introduced", 1,12000)
+t110 <- as.data.frame(as.character(h_intro_110$title))
 
-# h_intro_108 <- getBills(api_key,"108","house", "introduced", 1,12000)
-# s_intro_108 <- getBills(api_key,"108","senate", "introduced", 1,12000)
-# 
-# h_intro_107 <- getBills(api_key,"107","house", "introduced", 1,12000)
-# s_intro_107 <- getBills(api_key,"107","senate", "introduced", 1,12000)
-# 
-# h_intro_106 <- getBills(api_key,"106","house", "introduced", 1,12000)
-# s_intro_106 <- getBills(api_key,"106","senate", "introduced", 1,12000)
-# 
+t110$`as.character(h_intro_111$title)` <- gsub('Act', '', t110$`as.character(h_intro_110$title)`)
+t110$`as.character(h_intro_111$title)` <- gsub('2010', '', t110$`as.character(h_intro_110$title)`)
+t110$`as.character(h_intro_111$title)` <- gsub('2009', '', t110$`as.character(h_intro_110$title)`)
+t110$`as.character(h_intro_111$title)` <- gsub('United States', 'U.S.', t110$`as.character(h_intro_110$title)`)
+t110$`as.character(h_intro_111$title)` <- gsub('amend', '', t110$`as.character(h_intro_110$title)`)
 
-#t2 <- getBills(api_key,"112","house", "introduced", 8200,10000)
 
-# library(httr)
-# t3 <- GET("https://api.propublica.org/congress/v1/108/bills/hr4837.json",
-#           add_headers(`X-API-Key` = api_key))
-# 
-# 
-# 
-# ft_pr <- content(t3, 'parsed')
-# ft_res1 <- ft_pr$results
-# ft_res2 <- ft_res1[[1]]
-# ft_res3 <- ft_res2$title
-# 
-# str(ft_res3)
-# 
-# 
-# ft_res2$short_title
+t110_2 <- paste(unlist(t110), collapse =" ")
+
+t110_3 <- Corpus(VectorSource(t110_2))
+
+t110_5 <- tm_map(t110_3, PlainTextDocument)
+t110_6 <- tm_map(t110_5, removePunctuation)
+t110_7 <- tm_map(t110_6, removeWords, stopwords('english'))
+
+
+wordcloud_110 <- wordcloud(t110_7, max.words = 50, random.order = FALSE, colors=pal2)
+wordcloud_110
